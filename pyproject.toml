@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "sqlalchemy-sessions"
+version = "0.1.0"
+description = ""
+authors = ["Brandon Braner <brandon.braner@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+SQLAlchemy = "^1.4.36"
+factory-boy = "^3.2.1"
+aiosqlite = "^0.17.0"
+asyncpg = "^0.25.0"
+greenlet = "^1.1.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
