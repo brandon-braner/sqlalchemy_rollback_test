@@ -32,15 +32,23 @@ async def create_session(base: declarative_base):
 
 
 async def main():
+
+    # create session
     async_session = await create_session(Base)
     async with async_session() as session:
+        # strat transaction
         async with session.begin():
+
+            # run test here
+
             user = User(name="brandon_rollback", fullname="Brandon Rollback")
             session.add(user)
             # await session.commit()
 
             selected_user = await session.execute(select(User).where(User.name == "brandon_rollback"))
             print(selected_user.scalars().first())
+
+        # rollback data
         await session.rollback()
 
 
