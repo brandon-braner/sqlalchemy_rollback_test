@@ -15,7 +15,6 @@ class User(Base):
     name = Column(String(30))
     fullname = Column(String)
 
-
     def __repr__(self):
         return f"User(id={self.id!r}, name={self.name!r}, fullname={self.fullname!r})"
 
@@ -32,24 +31,21 @@ async def create_session(base: declarative_base):
 
 
 async def main():
-
     # create session
     async_session = await create_session(Base)
-    async with async_session() as session:
-        # strat transaction
-        async with session.begin():
+    # strat transaction
+    async with async_session.begin() as session:
+        # run test here
 
-            # run test here
+        user = User(name="brandon_rollback", fullname="Brandon Rollback")
+        session.add(user)
+        # await session.commit()
 
-            user = User(name="brandon_rollback", fullname="Brandon Rollback")
-            session.add(user)
-            # await session.commit()
-
-            selected_user = await session.execute(select(User).where(User.name == "brandon_rollback"))
-            print(selected_user.scalars().first())
+        selected_user = await session.execute(select(User).where(User.name == "brandon_rollback"))
+        print(selected_user.scalars().first())
 
         # rollback data
-        await session.rollback()
+    await session.rollback()
 
 
 asyncio.run(main())
